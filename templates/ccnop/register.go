@@ -3,8 +3,8 @@ package ccnop
 import (
 	"text/template"
 
-	"github.com/envoyproxy/protoc-gen-validate/templates/cc"
 	pgs "github.com/lyft/protoc-gen-star/v2"
+	"github.com/suhli/protoc-gen-validate/templates/cc"
 )
 
 func RegisterModule(tpl *template.Template, params pgs.Parameters) {

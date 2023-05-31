@@ -1,15 +1,15 @@
 package templates
 
 import (
-	"github.com/envoyproxy/protoc-gen-validate/templates/cc"
 	pgs "github.com/lyft/protoc-gen-star/v2"
 	pgsgo "github.com/lyft/protoc-gen-star/v2/lang/go"
+	"github.com/suhli/protoc-gen-validate/templates/cc"
 	"text/template"
 
-	"github.com/envoyproxy/protoc-gen-validate/templates/ccnop"
-	"github.com/envoyproxy/protoc-gen-validate/templates/go"
-	"github.com/envoyproxy/protoc-gen-validate/templates/java"
-	"github.com/envoyproxy/protoc-gen-validate/templates/shared"
+	"github.com/suhli/protoc-gen-validate/templates/ccnop"
+	"github.com/suhli/protoc-gen-validate/templates/go"
+	"github.com/suhli/protoc-gen-validate/templates/java"
+	"github.com/suhli/protoc-gen-validate/templates/shared"
 )
 
 type RegisterFn func(tpl *template.Template, params pgs.Parameters)

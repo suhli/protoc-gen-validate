@@ -1,4 +1,4 @@
-module github.com/envoyproxy/protoc-gen-validate/tests
+module github.com/suhli/protoc-gen-validate/tests
 
 go 1.12
 
@@ -8,4 +8,4 @@ require (
 	google.golang.org/protobuf v1.30.0
 )
 
-replace github.com/envoyproxy/protoc-gen-validate => ../
+replace github.com/suhli/protoc-gen-validate => ../

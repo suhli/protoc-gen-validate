@@ -10,7 +10,7 @@ go_library(
         "well_known.go",
         "enums.go"
     ],
-    importpath = "github.com/envoyproxy/protoc-gen-validate/templates/shared",
+    importpath = "github.com/suhli/protoc-gen-validate/templates/shared",
     visibility = ["//visibility:public"],
     deps = [
         "//validate:validate_go",
