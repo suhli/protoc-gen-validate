@@ -27,6 +27,17 @@ if m.GetLng() <= 0 {
 //...
 ```
 
+
+# install:
+1. > go install github.com/suhli/protoc-gen-validate@latest
+2. copy validate to your third party protos and import proto file
+# generate:
+```bash
+# ...
+--validate_out=lang=go,paths=source_relative:./
+# ...
+```
+
 ![The Buf logo](./.github/buf-logo.svg)
 
 # protoc-gen-validate (PGV)
@@ -116,10 +127,10 @@ Download assets from [GitHub Releases](https://github.com/bufbuild/protoc-gen-va
 
 ```sh
 # fetches this repo into $GOPATH
-go get -d github.com/envoyproxy/protoc-gen-validate
+go get -d github.com/suhli/protoc-gen-validate
 ```
 
-> #### 💡 Yes, our go module path is `github.com/envoyproxy/protoc-gen-validate` **not** `bufbuild` this is intentional.
+> #### 💡 Yes, our go module path is `github.com/suhli/protoc-gen-validate` **not** `bufbuild` this is intentional.
 > Changing the module path is effectively creating a new, independent module. We
 > would prefer not to break our users. The Go team are working on
 > better `cmd/go`
