@@ -181,7 +181,6 @@ func (fns goSharedFuncs) errCauseMessage(ctx shared.RuleContext, message string,
 		message,
 		causeFld,
 		keyFld)
-	println("error cause message", r)
 	return r
 }
 
