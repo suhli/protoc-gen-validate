@@ -1,3 +1,32 @@
+# modify: add custom error message
+usage: 
+```protobuf
+import "validate/validate.proto";
+message Test{
+  double Lng = 1 [(validate.rules).double.gt=0,(validate.errorMessage)='经度需要大于0'];
+}
+```
+will generate .go file likes below:
+
+```go
+//...
+if m.GetLng() <= 0 {
+		err := ProductSearchRequestValidationError{
+			field:  "Lng",
+			reason: "经度需要大于0",
+			cause: ProductSearchRequestValidationError{
+				field:  "Lng",
+				reason: "value must be greater than 0",
+			},
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+}
+//...
+```
+
 ![The Buf logo](./.github/buf-logo.svg)
 
 # protoc-gen-validate (PGV)
