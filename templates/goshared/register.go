@@ -20,36 +20,37 @@ func Register(tpl *template.Template, params pgs.Parameters) {
 	fns := goSharedFuncs{pgsgo.InitContext(params)}
 
 	tpl.Funcs(map[string]interface{}{
-		"accessor":      fns.accessor,
-		"byteStr":       fns.byteStr,
-		"cmt":           pgs.C80,
-		"durGt":         fns.durGt,
-		"durLit":        fns.durLit,
-		"durStr":        fns.durStr,
-		"err":           fns.err,
-		"errCause":      fns.errCause,
-		"errIdx":        fns.errIdx,
-		"errIdxCause":   fns.errIdxCause,
-		"errname":       fns.errName,
-		"multierrname":  fns.multiErrName,
-		"inKey":         fns.inKey,
-		"inType":        fns.inType,
-		"isBytes":       fns.isBytes,
-		"lit":           fns.lit,
-		"lookup":        fns.lookup,
-		"msgTyp":        fns.msgTyp,
-		"name":          fns.Name,
-		"oneof":         fns.oneofTypeName,
-		"pkg":           fns.PackageName,
-		"snakeCase":     fns.snakeCase,
-		"tsGt":          fns.tsGt,
-		"tsLit":         fns.tsLit,
-		"tsStr":         fns.tsStr,
-		"typ":           fns.Type,
-		"unwrap":        fns.unwrap,
-		"externalEnums": fns.externalEnums,
-		"enumName":      fns.enumName,
-		"enumPackages":  fns.enumPackages,
+		"accessor":        fns.accessor,
+		"byteStr":         fns.byteStr,
+		"cmt":             pgs.C80,
+		"durGt":           fns.durGt,
+		"durLit":          fns.durLit,
+		"durStr":          fns.durStr,
+		"err":             fns.err,
+		"errCause":        fns.errCause,
+		"errCauseMessage": fns.errCauseMessage,
+		"errIdx":          fns.errIdx,
+		"errIdxCause":     fns.errIdxCause,
+		"errname":         fns.errName,
+		"multierrname":    fns.multiErrName,
+		"inKey":           fns.inKey,
+		"inType":          fns.inType,
+		"isBytes":         fns.isBytes,
+		"lit":             fns.lit,
+		"lookup":          fns.lookup,
+		"msgTyp":          fns.msgTyp,
+		"name":            fns.Name,
+		"oneof":           fns.oneofTypeName,
+		"pkg":             fns.PackageName,
+		"snakeCase":       fns.snakeCase,
+		"tsGt":            fns.tsGt,
+		"tsLit":           fns.tsLit,
+		"tsStr":           fns.tsStr,
+		"typ":             fns.Type,
+		"unwrap":          fns.unwrap,
+		"externalEnums":   fns.externalEnums,
+		"enumName":        fns.enumName,
+		"enumPackages":    fns.enumPackages,
 	})
 
 	template.Must(tpl.New("msg").Parse(msgTpl))
@@ -150,6 +151,38 @@ func (fns goSharedFuncs) err(ctx shared.RuleContext, reason ...interface{}) stri
 
 func (fns goSharedFuncs) errCause(ctx shared.RuleContext, cause string, reason ...interface{}) string {
 	return fns.errIdxCause(ctx, "", cause, reason...)
+}
+
+func (fns goSharedFuncs) errCauseMessage(ctx shared.RuleContext, message string, cause ...interface{}) string {
+	f := ctx.Field
+	n := fns.Name(f)
+
+	var fld string
+	if ctx.Index != "" {
+		fld = fmt.Sprintf(`fmt.Sprintf("%s[%%v]", %s)`, n, ctx.Index)
+	} else {
+		fld = fmt.Sprintf("%q", n)
+	}
+	e := fns.err(ctx, cause...)
+	causeFld := fmt.Sprintf("cause: %s,", e)
+
+	keyFld := ""
+	if ctx.OnKey {
+		keyFld = "key: true,"
+	}
+	r := fmt.Sprintf(`%s{
+		field: %s,
+		reason: %q,
+		%s
+		%s
+	}`,
+		fns.errName(f.Message()),
+		fld,
+		message,
+		causeFld,
+		keyFld)
+	println("error cause message", r)
+	return r
 }
 
 func (fns goSharedFuncs) errIdx(ctx shared.RuleContext, idx string, reason ...interface{}) string {

@@ -1,12 +1,12 @@
 package goshared
 
 const wrapperTpl = `
-	{{ $f := .Field }}{{ $r := .Rules }}
+	{{ $f := .Field }}{{ $r := .Rules }}{{ $e := .ErrorMessage}}
 
 	if wrapper := {{ accessor . }}; wrapper != nil {
 		{{ render (unwrap . "wrapper") }}
 	} {{ if .MessageRules.GetRequired }} else {
-		err := {{ err . "value is required and must not be nil." }}
+		err := {{ errCauseMessage . $e "value is required and must not be nil." }}
 		if !all { return err }
 		errors = append(errors, err)
 	} {{ end }}

@@ -39,7 +39,6 @@ var (
 	_ = (*mail.Address)(nil)
 	_ = anypb.Any{}
 	_ = sort.Sort
-
 	{{ range $pkg, $enum := enumPackages (externalEnums .) }}
 	_ = {{ $pkg }}.{{ $enum.Name }}(0)
 	{{ end }}

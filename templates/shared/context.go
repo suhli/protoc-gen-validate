@@ -13,6 +13,7 @@ import (
 type RuleContext struct {
 	Field        pgs.Field
 	Rules        proto.Message
+	ErrorMessage string
 	MessageRules *validate.MessageRules
 
 	Typ        string
@@ -30,7 +31,9 @@ func rulesContext(f pgs.Field) (out RuleContext, err error) {
 	if _, err = f.Extension(validate.E_Rules, &rules); err != nil {
 		return
 	}
-
+	var msg string
+	f.Extension(validate.E_ErrorMessage, &msg)
+	out.ErrorMessage = msg
 	var wrapped bool
 	if out.Typ, out.Rules, out.MessageRules, wrapped = resolveRules(f.Type(), &rules); wrapped {
 		out.WrapperTyp = out.Typ

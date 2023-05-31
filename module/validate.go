@@ -69,7 +69,6 @@ func (m *Module) Execute(targets map[string]pgs.File, pkgs map[string]pgs.Packag
 			// Ex: Don't generate Java validators for files that don't reference PGV.
 			if out != nil {
 				outPath := strings.TrimLeft(strings.ReplaceAll(filepath.ToSlash(out.String()), module, ""), "/")
-
 				if opts := f.Descriptor().GetOptions(); opts != nil && opts.GetJavaMultipleFiles() && lang == "java" {
 					// TODO: Only Java supports multiple file generation. If more languages add multiple file generation
 					// support, the implementation should be made more inderect.

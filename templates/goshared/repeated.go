@@ -1,7 +1,7 @@
 package goshared
 
 const repTpl = `
-	{{ $f := .Field }}{{ $r := .Rules }}
+	{{ $f := .Field }}{{ $r := .Rules }}{{ $e := .ErrorMessage}}
 
 	{{ if $r.GetIgnoreEmpty }}
 		if len({{ accessor . }}) > 0 {
@@ -10,26 +10,26 @@ const repTpl = `
 	{{ if $r.GetMinItems }}
 		{{ if eq $r.GetMinItems $r.GetMaxItems }}
 			if len({{ accessor . }}) != {{ $r.GetMinItems }} {
-				err := {{ err . "value must contain exactly " $r.GetMinItems " item(s)" }}
+				err := {{ errCauseMessage . $e "value must contain exactly " $r.GetMinItems " item(s)" }}
 				if !all { return err }
 				errors = append(errors, err)
 			}
 		{{ else if $r.MaxItems }}
 			if l := len({{ accessor . }}); l < {{ $r.GetMinItems }} || l > {{ $r.GetMaxItems }} {
-				err := {{ err . "value must contain between " $r.GetMinItems " and " $r.GetMaxItems " items, inclusive" }}
+				err := {{ errCauseMessage . $e "value must contain between " $r.GetMinItems " and " $r.GetMaxItems " items, inclusive" }}
 				if !all { return err }
 				errors = append(errors, err)
 			}
 		{{ else }}
 			if len({{ accessor . }}) < {{ $r.GetMinItems }} {
-				err := {{ err . "value must contain at least " $r.GetMinItems " item(s)" }}
+				err := {{ errCauseMessage . $e "value must contain at least " $r.GetMinItems " item(s)" }}
 				if !all { return err }
 				errors = append(errors, err)
 			}
 		{{ end }}
 	{{ else if $r.MaxItems }}
 		if len({{ accessor . }}) > {{ $r.GetMaxItems }} {
-			err := {{ err . "value must contain no more than " $r.GetMaxItems " item(s)" }}
+			err := {{ errCauseMessage . $e "value must contain no more than " $r.GetMaxItems " item(s)" }}
 			if !all { return err }
 			errors = append(errors, err)
 		}
